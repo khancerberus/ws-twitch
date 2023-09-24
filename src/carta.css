@@ -1,0 +1,66 @@
+.carta {
+  --card-width: calc(253px);
+  --card-height: calc(351px);
+
+	width: var(--card-width);
+  height: var(--card-height);
+  perspective: 500px;
+	opacity: 0;
+
+	animation: aparicion 5000ms ease-in-out;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+
+	animation: rotar 2s cubic-bezier(.85, .2, .2, .85) 2s forwards;
+}
+
+.front-side,
+.back-side {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.front-side {
+  transform: rotateY(180deg);
+}
+
+@keyframes rotar {
+	from {
+		transform: rotateY(0deg);
+	}
+
+	to {
+		transform: rotateY(180deg);
+	}
+}
+
+@keyframes aparicion {
+  0% {
+    opacity: 0%;
+    transform: translate(0, 50px);
+  }
+
+  7% {
+    transform: translate(0, 0);
+    opacity: 100%;
+  }
+
+  93% {
+    opacity: 100%;
+    transform: translate(0, 0);
+  }
+
+  100% {
+    opacity: 0%;
+    transform: translate(0, 50px);
+  }
+}
