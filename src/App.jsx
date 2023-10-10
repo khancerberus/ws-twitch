@@ -10,7 +10,6 @@ function App() {
   const client = useTwitchClient();
   const [pokeName, setPokeName] = useState();
   const [messages, setMessages] = useState([]);
-  const [activeTimeout, setActiveTimeout] = useState();
 
   useEffect(() => {
     client.on('message', (channel, tags, message) => {
@@ -24,25 +23,20 @@ function App() {
     const userMessage = messages.at(0) || '';
     const userPokeName = userMessage.split(' ').at(1);
 
-    if (activeTimeout || pokeName) return;
+    let cardDeleteTimeout;
 
-    setPokeName(userPokeName);
-  }, [activeTimeout, pokeName, messages]);
-
-  useEffect(() => {
-    const cardDeleteTimeout = setTimeout(() => {
-      setMessages(messages.slice(1));
-      setActiveTimeout();
-      setPokeName();
-    }, 5000);
-
-    setActiveTimeout(cardDeleteTimeout);
+    if (userPokeName) {
+      cardDeleteTimeout = setTimeout(() => {
+        setMessages(messages.slice(1));
+        setPokeName();
+      }, 5000);
+      setPokeName(userPokeName);
+    }
 
     return () => {
       clearTimeout(cardDeleteTimeout);
-      setActiveTimeout();
     };
-  }, [pokeName, messages]);
+  }, [messages]);
 
   console.log({ messages });
 
